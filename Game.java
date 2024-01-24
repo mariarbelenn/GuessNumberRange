@@ -3,50 +3,71 @@ package guessNumber;
 import java.util.Scanner;
 
 public class Game {
-	//Scanner object for reading input 
-	public static void main(String[] args) {
-		Scanner scannerObject = new Scanner(System.in);
-		//Ask user to enter a range for the game
-		System.out.print("Welcome to Guess Number Game. Enter a range");
-		int m = scannerObject.nextInt();
-		
-		//Create random number generator within the range
-		int number = (int)(Math.random()* m); 
-		//Initialize variables of cost and guess
-        int costOfGuess = 1;
-        int remainingGuess = 1;
 
-        //Loop continues until user has no more guesses 
-		while (remainingGuess > 0) {
-			//Prompts user to enter guess
-			System.out.print("Enter your guess");
-			int guess = scannerObject.nextInt();
-			//Check if guess is equal to number and break out of loop
-			if(guess ==number) {
-				System.out.print("Yes, the number is"+ number);
-				break;
-			//if guess is greater than number, it will give user hints 
-			}else if(guess > number) {
-				System.out.print("Your guess is too high");
-			}else {
-				//If guess is less than number it will give user hints 
-				System.out.print("Your guess is too low");
-			}
-			  //Asks user if they want to purchase guesses
-			  System.out.print("\nDo you want to buy an additional guess? (1 for Yes, 2 for No): ");
-              int purchase = scannerObject.nextInt();
-              	//If user selects yes, they will be given one more guess
-              	if (purchase == 1) {
-                  remainingGuess = 1;
-                  //Prints the cost of additional guess
-                  System.out.println("You've purchased an additional guess for $" + costOfGuess + ".");
-                  System.out.println("You now have " + remainingGuess + " guess.");
-              }else {
-            	  //If user selects No, the number will be given and loop will break
-            	  System.out.println ("The number was " + number);
-            	  break;
-              }
-		}
-	}
-}
-		
+    public static void main(String[] args) {
+        Scanner scannerObject = new Scanner(System.in);
+
+        // Ask the user to enter a value for m
+        System.out.print("Welcome to Guess Number Game. Enter a value for m: ");
+        int m = scannerObject.nextInt();
+
+        // Calculate the range based on the user input
+        int range = (int) Math.pow(10, m);
+
+        // Generate a random number within the specified range
+        int number = (int) (Math.random() * range);
+        //The user gets 5 chances 
+        int initialGuesses = 5;
+        //will change in the game
+        int remainingGuesses = initialGuesses;
+        //User can keep guessing as long as the guess chances is greater than 0 
+        while (remainingGuesses > 0) {
+        	//User prompted to enter the guess
+            System.out.print("Enter your guess: ");
+            int guess = scannerObject.nextInt();
+            //Guesses are deducted in loop
+            remainingGuesses--;
+            
+          //Check if guess is equal to number and break out of loop
+            if (guess == number) {
+                System.out.print("Yes, the number is " + number);
+                break;
+            // //if guess is greater than number, it will give user hints
+            } else if (guess > number) {
+                System.out.print("Your guess is too high");
+            //If guess is less than number it will give user hints
+            } else {
+                System.out.print("Your guess is too low");
+            }
+            //Tell user how many guesses they have left 
+            System.out.println("\nRemaining guesses are " + remainingGuesses);
+
+            // Check if the user wants to buy more guesses
+            if (remainingGuesses > 0) {
+                System.out.print("Do you want to buy more guesses? (1 for Yes, 2 for No): ");
+                int purchase = scannerObject.nextInt();
+                ////If user selects yes, they will get to choose how many they want to purchase 
+                if (purchase == 1) {
+                    System.out.print("Enter the number of additional guesses you want to buy: ");
+                    int addedGuesses = scannerObject.nextInt();
+                    //Remaining Guesses is added to added guesses
+                    remainingGuesses += addedGuesses;
+                    //Tells the user how many they have purchased 
+                    System.out.println("You've purchased " + addedGuesses + " additional guesses");
+                } else {
+                	//if the guesses reaches 0, the correct number will print and it will break
+                    if (remainingGuesses == 0) {
+                        System.out.println("No more guesses. The number was " + number);
+                        break;
+                    } else {
+                    	//if not it will continue in the loop
+                        System.out.println("Continuing with remaining guesses.");
+                    }
+                }
+            } else {
+                System.out.println("Out of guesses. The number was " + number);
+                break;
+            }
+        }
+    }
+}	
